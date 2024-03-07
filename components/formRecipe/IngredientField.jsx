@@ -9,19 +9,19 @@ const IngredientField = ({ register, errors, index, removeIngredient }) => {
     <div>
       <div className="flex gap-x-3 mb-2">
         <Input
-          className="w-2/5 placeholder:font-light"
+          className={`w-2/5 placeholder:font-light ${errors.ingredients?.[index]?.quantity ? "border-red-500" : ""}`}
           type="text"
-          placeholder="Quantité"
+          placeholder="10"
           {...register(`ingredients.${index}.quantity`)}
         />
         <Input
-          className="placeholder:font-light"
+          className="w-1/3 placeholder:font-light"
           type="text"
-          placeholder="Unité"
+          placeholder="g"
           {...register(`ingredients.${index}.measure`)}
         />
         <Input
-          className={`w-2/5 placeholder:font-light ${errors.ingredients?.[index]?.name ? "border-red-500" : ""}`}
+          className={`placeholder:font-light ${errors.ingredients?.[index]?.name ? "border-red-500" : ""}`}
           type="text"
           placeholder="Nom *"
           {...register(`ingredients.${index}.name`)}
@@ -32,7 +32,7 @@ const IngredientField = ({ register, errors, index, removeIngredient }) => {
           type="button"
           onClick={() => removeIngredient(index)}
         >
-          <XCircle className="h-4 w-4" />
+          <XCircle className="h-4 w-4 text-myblue" />
         </Button>
       </div>
       {errors.ingredients && errors.ingredients[index]?.name && (

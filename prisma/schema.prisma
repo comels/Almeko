@@ -71,26 +71,20 @@ model User {
 }
 
 model Recipe {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  authorId  String   @db.ObjectId
-  title     String
-  steps     String[]
-  category  String[]
-  createdAt DateTime @default(now())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  authorId      String   @db.ObjectId
+  name          String
+  category      String
+  withoutAlcool Boolean
+  vegetarian    Boolean
+  servings      Int
+  createdAt     DateTime @default(now())
+  ingredients   Json
+  instructions  Json
 
-  author      User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  comments    Comment[]
-  likes       Like[]
-  ingredients Ingredient[]
-}
-
-model Ingredient {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  measure  String
-  quantity Float
-
-  recipe Recipe @relation(fields: [id], references: [id], onDelete: Cascade)
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  likes    Like[]
 }
 
 model Comment {

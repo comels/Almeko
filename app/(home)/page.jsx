@@ -1,14 +1,13 @@
-import { getCurrentUser, getSession } from "../actions/getCurrentUser";
-import FormRecipe from "@/components/formRecipe/Form";
+import CategoryMenu from "@/components/header/CategoryMenu";
+import { getCurrentUser } from "../actions/getCurrentUser";
+import Footer from "@/components/Footer";
 
 export const Home = async () => {
-  const session = await getSession();
   const currentUser = await getCurrentUser();
   return (
     <div>
-      {/* <pre>{JSON.stringify(session, null, 2)}</pre>
-      <pre>{JSON.stringify(currentUser, null, 2)}</pre> */}
-      <FormRecipe />
+      <CategoryMenu />
+      <Footer />
     </div>
   );
 };

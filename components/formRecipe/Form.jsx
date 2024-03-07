@@ -1,12 +1,12 @@
 "use client";
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import IngredientField from "./IngredientField";
 import InstructionField from "./InstructionField";
+import RecipeSchema from "../../lib/recipeSchema";
+
 import {
   Select,
   SelectContent,
@@ -15,31 +15,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Badge } from "../ui/badge";
+import { useToast } from "../ui/use-toast";
+import { CheckCircle2 } from "lucide-react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const RecipeSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Le nom de la recette doit faire au moins 3 caractères."),
-  category: z.string(),
-  ingredients: z.array(
-    z.object({
-      name: z
-        .string()
-        .min(3, "Le nom de l'ingrédient doit faire au moins 3 caractères."),
-      quantity: z.string(),
-      measure: z.string(),
-    })
-  ),
-  instructions: z.array(
-    z.object({
-      name: z
-        .string()
-        .min(3, "L'instruction doit faire au moins 5 caractères."),
-    })
-  ),
-});
+export const categories = [
+  { value: "aperos", label: "Apéros" },
+  { value: "entree", label: "Entrées" },
+  { value: "plat", label: "Plats" },
+  { value: "dessert", label: "Desserts" },
+  { value: "cocktail", label: "Cocktails" },
+];
 
-const FormRecipe = () => {
+const FormRecipe = ({ currentUser }) => {
+  const router = useRouter();
   const {
     register,
     watch,
@@ -50,6 +44,8 @@ const FormRecipe = () => {
   } = useForm({
     resolver: zodResolver(RecipeSchema),
     defaultValues: {
+      author: currentUser,
+      name: "",
       ingredients: [
         {
           name: "",
@@ -59,9 +55,12 @@ const FormRecipe = () => {
       ],
       instructions: [
         {
-          name: "",
+          content: "",
         },
       ],
+      vegetarian: false,
+      withoutAlcool: false,
+      servings: 1,
     },
   });
 
@@ -83,29 +82,48 @@ const FormRecipe = () => {
     name: "instructions",
   });
 
-  const categories = [
-    { name: "Apéros", value: "aperos" },
-    { name: "Entrée", value: "entree" },
-    { name: "Plat", value: "plat" },
-    { name: "Dessert", value: "dessert" },
-    { name: "Cocktail", value: "cocktail" },
-  ];
+  const { toast } = useToast();
+
   const watchedIngredients = watch("ingredients");
+  const watchedName = watch("name");
   const watchedInstructions = watch("instructions");
+  const watchedCategory = watch("category");
+  const watchedWithoutAlcool = watch("withoutAlcool");
+  const watchedVegetarian = watch("vegetarian");
+  const watchedServings = watch("servings");
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
-    reset();
+
+    await axios
+      .post("/api/recipes", data)
+      .then(() => {
+        toast({
+          icon: <CheckCircle2 className="text-green-600" />,
+          title: "Votre recette a bien été ajoutée.",
+          description: "Merci !",
+        });
+        router.refresh();
+        reset();
+        router.push("/recette/mes-recettes/");
+      })
+      .catch((error) => {
+        toast({
+          icon: <CheckCircle2 className="text-red-600" />,
+          title: "Une erreur est survenue.",
+          description: "Veuillez réessayer.",
+        });
+        console.log(error);
+      });
   };
 
   return (
     // FORMULAIRE
-    <div className="mt-5 flex lg:flex-row flex-col gap-10 justify-between">
+    <div className="mt-5 flex flex-col justify-between gap-10 text-gray-800 lg:flex-row">
       <form className="flex-1" onSubmit={handleSubmit(onSubmit)}>
         {/* NOM DE LA RECETTE */}
         <div className="mb-5 sm:mb-10">
-          <h1 className="font-extrabold mb-2 tracking-tight text-xl sm:text-2xl">
+          <h1 className="mb-2 text-xl font-extrabold tracking-tight sm:text-2xl">
             Nom de la recette
           </h1>
           <Input
@@ -115,33 +133,29 @@ const FormRecipe = () => {
             {...register("name")}
           />
           {errors.name && (
-            <p className="text-sm ml-3 mb-3 font-light text-red-500">
+            <p className="mb-3 ml-3 text-sm font-light text-red-500">
               {errors.name.message}
             </p>
           )}
         </div>
         {/* CATEGORIE DE LA RECETTE */}
-        <div className="mb-5 sm:mb:10">
-          <h1 className="font-extrabold mb-2 tracking-tight text-xl sm:text-2xl">
+        <div className="sm:mb:10 mb-5">
+          <h1 className="mb-2 text-xl font-extrabold tracking-tight sm:text-2xl">
             Catégorie
           </h1>
           <Controller
             name="category"
             control={control}
             render={({ field }) => (
-              <Select {...field} onChange={(value) => field.onChange(value)}>
+              <Select onValueChange={field.onChange}>
                 <SelectTrigger className="mb-2">
                   <SelectValue placeholder="Choisir une catégorie" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {categories.map((category, index) => (
-                      <SelectItem
-                        key={index}
-                        value={category.value}
-                        onClick={() => field.onChange(category.value)} // Mettre à jour la valeur du formulaire
-                      >
-                        {category.name}
+                    {categories.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -149,24 +163,96 @@ const FormRecipe = () => {
               </Select>
             )}
           />
+          {errors.category && (
+            <p className="mb-3 ml-3 text-sm font-light text-red-500">
+              {errors.category.message}
+            </p>
+          )}
+          {/* CHECKBOX ALCOOL */}
+          {watchedCategory === "cocktail" && (
+            <div>
+              <Controller
+                name="withoutAlcool"
+                control={control}
+                render={({ field }) => (
+                  <div className="ml-2 mt-4 flex items-center gap-2">
+                    <Checkbox
+                      id="terms"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <label htmlFor="terms" className="font-medium">
+                      Sans alcool
+                    </label>
+                  </div>
+                )}
+              />
+            </div>
+          )}
+          {/* CHECKBOX VEGETARIEN */}
+          {["aperos", "entree", "plat"].includes(watchedCategory) && (
+            <div>
+              <Controller
+                name="vegetarian"
+                control={control}
+                render={({ field }) => (
+                  <div className="ml-2 mt-4 flex items-center gap-2">
+                    <Checkbox
+                      id="terms"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <label htmlFor="terms" className="font-medium">
+                      Végétarien
+                    </label>
+                  </div>
+                )}
+              />
+            </div>
+          )}
+        </div>
+        {/* NOMBRE DE PERSONNES */}
+        <div className="mb-5 sm:mb-10">
+          <h1 className="mb-2 text-xl font-extrabold tracking-tight sm:text-2xl">
+            Nombre de personnes
+          </h1>
+          <Input
+            className="mb-2"
+            min="1"
+            type="number"
+            placeholder="Nombre de personnes"
+            {...register("servings", { valueAsNumber: true })}
+          />
         </div>
         {/* LISTE DES INGREDIENTS */}
         <div className="mb-5 sm:mb-10">
-          <h1 className="font-extrabold mb-2 tracking-tight text-xl sm:text-2xl">
+          <h1 className="mb-2 text-xl font-extrabold tracking-tight sm:text-2xl">
             Ingrédients
           </h1>
           {ingredientsFields.map((field, index) => (
-            <IngredientField
-              key={field.id}
-              register={register}
-              errors={errors}
-              index={index}
-              removeIngredient={() => removeIngredient(index)}
-            />
+            <div key={field.id}>
+              <IngredientField
+                register={register}
+                errors={errors}
+                index={index}
+                removeIngredient={() => removeIngredient(index)}
+              />
+              {errors.ingredients && errors.ingredients[index]?.quantity && (
+                <p className="mb-3 ml-3 text-sm font-light text-red-500">
+                  {errors.ingredients[index].quantity.message}
+                </p>
+              )}
+            </div>
           ))}
+          {errors.ingredients?.root && (
+            <p className="mb-3 ml-3 text-sm font-light text-red-500">
+              {errors.ingredients.root.message}
+            </p>
+          )}
+
           <Button
             size="sm"
-            variant="outline"
+            variant="outlineblue"
             type="button"
             onClick={() =>
               appendIngredient({ name: "", quantity: "", measure: "" })
@@ -177,7 +263,7 @@ const FormRecipe = () => {
         </div>
         {/* LISTE DES INSTRUCTIONS */}
         <div className="mb-5 sm:mb-10">
-          <h1 className="font-extrabold mb-2 tracking-tight text-xl sm:text-2xl">
+          <h1 className="mb-2 text-xl font-extrabold tracking-tight sm:text-2xl">
             Instructions
           </h1>
           {instructionsFields.map((field, index) => (
@@ -189,20 +275,25 @@ const FormRecipe = () => {
               removeInstruction={() => removeInstruction(index)}
             />
           ))}
+          {errors.instructions?.root && (
+            <p className="mb-3 ml-3 text-sm font-light text-red-500">
+              {errors.instructions.root.message}
+            </p>
+          )}
           <Button
             size="sm"
-            variant="outline"
+            variant="outlineblue"
             type="button"
-            onClick={() => appendInstruction({ name: "" })}
+            onClick={() => appendInstruction({ content: "" })}
           >
-            Ajouter une instruction
+            Ajouter une étape
           </Button>
         </div>
         {/* BOUTON DE SOUMISSION */}
         <Button
-          variant="kaki"
+          variant="blue"
           disabled={isSubmitting}
-          className=""
+          className="w-full"
           type="submit"
         >
           Ajouter la recette
@@ -211,39 +302,80 @@ const FormRecipe = () => {
 
       {/* PARTIE DROITE : RECIPE CARD */}
       <div className="flex-1">
-        <div className="w-full max-w-xl mx-auto flex flex-col pb-10 bg-white rounded-lg shadow-lg">
+        <div className="mx-auto flex w-full max-w-xl flex-col rounded-lg border-8 border-myblue bg-white pb-10">
+          {/* HEADER DE LA RECETTE */}
+          <div className="mx-10 my-4">
+            <div className="mb-5 flex flex-col items-center justify-center gap-2">
+              <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                {watchedName}
+              </h1>
+              {currentUser && (
+                <p className="text-xs font-bold text-myblue">
+                  {currentUser.name}
+                </p>
+              )}
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              {watchedCategory && (
+                <Badge variant="secondary">
+                  {
+                    categories.find(
+                      (category) => category.value === watchedCategory,
+                    )?.label
+                  }
+                </Badge>
+              )}
+              {watchedVegetarian &&
+                ["aperos", "entree", "plat"].includes(watchedCategory) && (
+                  <Badge variant="secondary">Végétarien</Badge>
+                )}
+              {watchedWithoutAlcool && watchedCategory === "cocktail" && (
+                <Badge variant="secondary">Sans alcool</Badge>
+              )}
+
+              <Badge variant="secondary">{watchedServings}. pax</Badge>
+            </div>
+          </div>
           {/* INGREDIENTS */}
-          <div className="mx-10 my-2">
-            <h1 className="font-extrabold mb-2 tracking-tight text-xl sm:text-2xl">
+          <div className="mx-10 my-5">
+            <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
               Ingrédients
             </h1>
             <div>
               {watchedIngredients.map((ingredient, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <p>
-                    {ingredient.quantity}
-                    {ingredient.measure && " "}
-                    {ingredient.measure}
-                  </p>
+                <div
+                  key={index}
+                  className="mb-1 flex items-center gap-3 text-neutral-800"
+                >
+                  {ingredient.quantity && (
+                    <div className="flex gap-1">
+                      {ingredient.quantity && <p>{ingredient.quantity}</p>}
+                      {ingredient.measure && <p>{ingredient.measure}</p>}
+                    </div>
+                  )}
 
                   <p>{ingredient.name}</p>
                 </div>
               ))}
             </div>
           </div>
-
           {/* INSTRUCTIONS */}
           <div className="mx-10">
-            <h1 className="font-extrabold mb-5 tracking-tight text-xl sm:text-2xl">
-              Instructions
+            <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
+              Préparation
             </h1>
             <div>
-              {watchedInstructions.map((ingredient, index) => (
-                <div key={index} className="flex mb-5 gap-2">
+              {watchedInstructions.map((instruction, index) => (
+                <div key={index} className="mb-2 flex gap-2">
                   {watchedInstructions.length > 0 && (
-                    <p className="font-extrabold">{index + 1}.</p>
+                    <div className="font-bold">
+                      {index + 1}
+                      {"."}
+                    </div>
                   )}
-                  <p className="text-start">{ingredient.name}</p>
+                  <p className="text-start text-neutral-900">
+                    {instruction.content}
+                  </p>
                 </div>
               ))}
             </div>

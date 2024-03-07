@@ -10,6 +10,7 @@ export const LoginButton = () => {
   const [isPending, startTransition] = useTransition();
   return (
     <Button
+      size="sm"
       variant="outline"
       onClick={() => {
         startTransition(() => signIn());
