@@ -1,14 +1,14 @@
-"use client";
+import { findRecipeById } from "@/app/actions/recipeActions";
+import { getCurrentUser } from "@/app/actions/userActions";
+import FormRecipe from "@/components/formRecipe/FormRecipe";
 
-import { useParams } from "next/navigation";
+const UpdateRecipe = async ({ params }) => {
+  const currentUser = await getCurrentUser();
+  const recipe = await findRecipeById(params.recetteId);
 
-const UpdateRecipe = () => {
-  const params = useParams();
-  console.log(params);
   return (
-    <div>
-      <h1 className="mt-32">Modifier une recette</h1>
-      {params.recetteId}
+    <div className="mx-10 mt-14 sm:mx-20">
+      <FormRecipe currentUser={currentUser} recipe={recipe} />
     </div>
   );
 };

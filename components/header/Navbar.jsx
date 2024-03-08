@@ -22,20 +22,24 @@ const Navbar = ({ currentUser }) => {
           <Search className="h-5 w-5 text-myblue" />
         </Button>
       </div>
-      <Link
-        href="/recette/ajouter"
-        className={clsx(
-          buttonVariants({ variant: "blue", size: "sm" }),
-          "hidden md:flex",
+      <div className="flex items-center gap-4">
+        <Link
+          href="/recette/ajouter"
+          className={clsx(
+            buttonVariants({ variant: "blue", size: "sm" }),
+            "hidden md:flex",
+          )}
+        >
+          Ajouter une recette
+        </Link>
+        {currentUser ? (
+          <div className="hidden md:flex">
+            <MenuDeroulant />
+          </div>
+        ) : (
+          <LoginButton />
         )}
-      >
-        Ajouter une recette
-      </Link>
-      {currentUser ? (
-        <MenuDeroulant currentUser={currentUser} />
-      ) : (
-        <LoginButton />
-      )}
+      </div>
     </div>
   );
 };

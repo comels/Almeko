@@ -21,8 +21,8 @@ import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
 import { useToast } from "../ui/use-toast";
 import { CheckCircle2 } from "lucide-react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { createRecipe } from "@/app/actions/recipeActions";
 
 export const categories = [
   { value: "aperos", label: "Apéros" },
@@ -95,26 +95,24 @@ const FormRecipe = ({ currentUser }) => {
   const onSubmit = async (data) => {
     console.log(data);
 
-    await axios
-      .post("/api/recipes", data)
-      .then(() => {
-        toast({
-          icon: <CheckCircle2 className="text-green-600" />,
-          title: "Votre recette a bien été ajoutée.",
-          description: "Merci !",
-        });
-        router.refresh();
-        reset();
-        router.push("/recette/mes-recettes/");
-      })
-      .catch((error) => {
-        toast({
-          icon: <CheckCircle2 className="text-red-600" />,
-          title: "Une erreur est survenue.",
-          description: "Veuillez réessayer.",
-        });
-        console.log(error);
+    try {
+      await createRecipe(data);
+      toast({
+        icon: <CheckCircle2 className="text-green-600" />,
+        title: "Votre recette a bien été ajoutée.",
+        description: "Merci !",
       });
+      router.refresh();
+      reset();
+      router.push("/recette/mes-recettes/");
+    } catch (error) {
+      toast({
+        icon: <CheckCircle2 className="text-red-600" />,
+        title: "Une erreur est survenue.",
+        description: "Veuillez réessayer.",
+      });
+      console.log(error);
+    }
   };
 
   return (

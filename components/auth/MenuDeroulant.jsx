@@ -12,12 +12,12 @@ import {
 import Link from "next/link";
 import { LogoutButton } from "./LogoutButton";
 
-export const MenuDeroulant = ({ currentUser }) => {
+export const MenuDeroulant = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="sm" variant="outlineblue">
-          {currentUser.name}
+        <Button className="w-full" size="sm" variant="ghost">
+          <User2 className="h-5 w-5 text-myblue" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-3 sm:mr-10">

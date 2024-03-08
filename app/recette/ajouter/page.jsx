@@ -1,5 +1,5 @@
-import { getCurrentUser } from "../../actions/getCurrentUser";
-import FormRecipe from "@/components/formRecipe/Form";
+import { getCurrentUser } from "../../actions/userActions";
+import FormRecipe from "@/components/formRecipe/FormRecipe";
 
 export const AddRecipe = async () => {
   const currentUser = await getCurrentUser();

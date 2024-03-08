@@ -1,5 +1,5 @@
 import CategoryMenu from "@/components/header/CategoryMenu";
-import { getCurrentUser } from "../actions/getCurrentUser";
+import { getCurrentUser } from "../actions/userActions";
 import Footer from "@/components/Footer";
 
 export const Home = async () => {

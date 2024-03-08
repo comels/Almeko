@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
-import { categories } from "../formRecipe/Form";
+import { categories } from "../formRecipe/FormRecipe";
 import CategoryItem from "./CategoryItem";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
@@ -18,8 +18,8 @@ const CategoryMenu = () => {
 
   return (
     <ScrollArea>
-      <div className="mt-5 mb-1 py-4 md:mx-0 mx-5">
-        <div className="flex items-center gap-5 justify-between max-w-2xl mx-auto">
+      <div className="mx-5 mb-1 mt-5 py-4 md:mx-0">
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-5">
           {categories.map((category) => (
             <CategoryItem
               key={category.value}

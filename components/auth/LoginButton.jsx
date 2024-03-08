@@ -11,17 +11,16 @@ export const LoginButton = () => {
   return (
     <Button
       size="sm"
-      variant="outline"
+      variant="ghost"
       onClick={() => {
         startTransition(() => signIn());
       }}
     >
       {isPending ? (
-        <Loader className="mr-2 h-4 w-4" />
+        <Loader className="h-5 w-5 text-myblue" />
       ) : (
-        <LogIn className="mr-2 h-4 w-4" />
+        <LogIn className="h-5 w-5 text-myblue" />
       )}
-      Connexion
     </Button>
   );
 };

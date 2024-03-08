@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
@@ -21,4 +23,17 @@ export const getCurrentUser = async () => {
   } catch (error) {
     return null;
   }
+};
+
+export const getUserRecipes = async () => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) return null;
+
+  const recipes = await prisma.recipe.findMany({
+    where: {
+      authorId: currentUser.id,
+    },
+  });
+
+  return recipes;
 };

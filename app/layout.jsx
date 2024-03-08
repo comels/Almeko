@@ -1,7 +1,8 @@
 import { Header } from "@/components/header/Header";
 import "./globals.css";
-import { getCurrentUser } from "./actions/getCurrentUser";
+import { getCurrentUser } from "./actions/userActions";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Almeko",
@@ -17,7 +18,9 @@ const RootLayout = async ({ children }) => {
           <Header currentUser={currentUser} />
           <div className="m-auto w-full flex-1 py-14">{children}</div>
           <Toaster />
-          {/* <Footer /> */}
+        </div>
+        <div className="pt-14">
+          <Footer currentUser={currentUser} />
         </div>
       </body>
     </html>

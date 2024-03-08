@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 
-export const CardProfile = ({currentUser}) => {
+export const CardProfile = ({ currentUser }) => {
   return (
     <div>
       {currentUser ? (
-        <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
+        <div className="mx-auto mt-14 w-full max-w-2xl bg-white">
           <div className="flex justify-end px-4 pt-4"></div>
           <div className="flex flex-col items-center pb-10">
             <img
-              className="w-36 h-36 mb-5 rounded-full shadow-lg"
+              className="mb-5 h-72 w-72 rounded-full border-[24px] border-myblue p-2"
               src={currentUser.image ? currentUser.image : "/avatar.jpeg"}
               alt={currentUser.name}
             />
@@ -18,7 +18,7 @@ export const CardProfile = ({currentUser}) => {
               {currentUser.name}
             </h5>
             <span className="text-sm text-gray-500 ">{currentUser.email}</span>
-            <div className="flex gap-4 mt-4 md:mt-6">
+            <div className="mt-4 flex gap-4 md:mt-6">
               <Button variant="outline">Suivre</Button>
               <Button variant="outline">Message</Button>
             </div>
