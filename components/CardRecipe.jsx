@@ -19,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import Link from "next/link";
+import { WriteForm } from "./comments/WriteForm";
 
 const CardRecipe = ({ recipe, user }) => {
   const { toast } = useToast();
@@ -202,6 +203,7 @@ const CardRecipe = ({ recipe, user }) => {
           </div>
         )}
       </div>
+      {user && <WriteForm user={user} recipe={recipe} />}
     </div>
   );
 };

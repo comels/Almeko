@@ -25,6 +25,7 @@ export const getCurrentUser = async () => {
   }
 };
 
+// Fonction pour récupérer les recettes de l'utilisateur
 export const getUserRecipes = async () => {
   const currentUser = await getCurrentUser();
   if (!currentUser) throw new Error("Connectez-vous pour voir vos recettes");
@@ -36,4 +37,14 @@ export const getUserRecipes = async () => {
   });
 
   return recipes;
+};
+
+// Fonction pour retrouver un utilisateur par son id
+export const getUserById = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user;
 };

@@ -108,7 +108,7 @@ const FormRecipe = ({ currentUser, recipe }) => {
       }
       router.refresh();
       reset();
-      router.push("/recette/mes-recettes/");
+      router.push(`/recette/${recipe ? recipe.id : "mes-recettes"}`);
     } catch (error) {
       toast({
         icon: <CheckCircle2 className="text-red-600" />,
