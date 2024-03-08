@@ -6,7 +6,7 @@ import { LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useTransition } from "react";
 
-export const LoginButton = () => {
+export const LoginButton = ({ text }) => {
   const [isPending, startTransition] = useTransition();
   return (
     <Button
@@ -21,6 +21,7 @@ export const LoginButton = () => {
       ) : (
         <LogIn className="h-5 w-5 text-myblue" />
       )}
+      <span className="ml-2 text-base font-bold">{text}</span>
     </Button>
   );
 };

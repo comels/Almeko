@@ -27,7 +27,7 @@ export const getCurrentUser = async () => {
 
 export const getUserRecipes = async () => {
   const currentUser = await getCurrentUser();
-  if (!currentUser) return null;
+  if (!currentUser) throw new Error("Connectez-vous pour voir vos recettes");
 
   const recipes = await prisma.recipe.findMany({
     where: {

@@ -41,3 +41,23 @@ export const findRecipeById = async (id) => {
   });
   return recipe;
 };
+
+// Fonction pour modifier une recette
+export const updateRecipe = async (id, data) => {
+  await prisma.recipe.update({
+    where: {
+      id,
+    },
+    data: {
+      name: data.name,
+      category: data.category,
+      servings: data.servings,
+      vegetarian: data.vegetarian,
+      withoutAlcool: data.withoutAlcool,
+      ingredients: data.ingredients,
+      instructions: data.instructions,
+    },
+  });
+  console.log("Recipe updated");
+  revalidatePath("/");
+};

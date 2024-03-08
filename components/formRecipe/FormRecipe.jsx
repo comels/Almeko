@@ -22,7 +22,7 @@ import { Badge } from "../ui/badge";
 import { useToast } from "../ui/use-toast";
 import { CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createRecipe } from "@/app/actions/recipeActions";
+import { createRecipe, updateRecipe } from "@/app/actions/recipeActions";
 
 export const categories = [
   { value: "aperos", label: "Apéros" },
@@ -32,7 +32,7 @@ export const categories = [
   { value: "cocktail", label: "Cocktails" },
 ];
 
-const FormRecipe = ({ currentUser }) => {
+const FormRecipe = ({ currentUser, recipe }) => {
   const router = useRouter();
   const {
     register,
@@ -45,22 +45,15 @@ const FormRecipe = ({ currentUser }) => {
     resolver: zodResolver(RecipeSchema),
     defaultValues: {
       author: currentUser,
-      name: "",
-      ingredients: [
-        {
-          name: "",
-          quantity: "",
-          measure: "",
-        },
-      ],
-      instructions: [
-        {
-          content: "",
-        },
-      ],
-      vegetarian: false,
-      withoutAlcool: false,
-      servings: 1,
+      name: recipe ? recipe.name : "",
+      ingredients: recipe
+        ? recipe.ingredients
+        : [{ name: "", quantity: "", measure: "" }],
+      instructions: recipe ? recipe.instructions : [{ content: "" }],
+      category: recipe ? recipe.category : "",
+      withoutAlcool: recipe ? recipe.withoutAlcool : false,
+      vegetarian: recipe ? recipe.vegetarian : false,
+      servings: recipe ? recipe.servings : 1,
     },
   });
 
@@ -96,12 +89,23 @@ const FormRecipe = ({ currentUser }) => {
     console.log(data);
 
     try {
-      await createRecipe(data);
-      toast({
-        icon: <CheckCircle2 className="text-green-600" />,
-        title: "Votre recette a bien été ajoutée.",
-        description: "Merci !",
-      });
+      if (recipe) {
+        // Si `recipe` existe, on met à jour la recette
+        await updateRecipe(recipe.id, data);
+        toast({
+          icon: <CheckCircle2 className="text-green-600" />,
+          title: "Votre recette a été mise à jour avec succès.",
+          description: "Merci !",
+        });
+      } else {
+        // Sinon, on crée une nouvelle recette
+        await createRecipe(data);
+        toast({
+          icon: <CheckCircle2 className="text-green-600" />,
+          title: "Votre recette a bien été ajoutée.",
+          description: "Merci !",
+        });
+      }
       router.refresh();
       reset();
       router.push("/recette/mes-recettes/");
@@ -145,14 +149,24 @@ const FormRecipe = ({ currentUser }) => {
             name="category"
             control={control}
             render={({ field }) => (
-              <Select onValueChange={field.onChange}>
+              <Select
+                {...field} // Utilise les props du field, incluant onChange et value
+                onValueChange={(value) => {
+                  field.onChange(value); // Met à jour la valeur du champ dans react-hook-form
+                }}
+                value={field.value} // Assure que la valeur sélectionnée est la valeur actuelle du champ
+              >
                 <SelectTrigger className="mb-2">
                   <SelectValue placeholder="Choisir une catégorie" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {categories.map((category) => (
-                      <SelectItem key={category.value} value={category.value}>
+                      <SelectItem
+                        key={category.value}
+                        value={category.value}
+                        selected={(field.value = category.value)}
+                      >
                         {category.label}
                       </SelectItem>
                     ))}
@@ -294,7 +308,7 @@ const FormRecipe = ({ currentUser }) => {
           className="w-full"
           type="submit"
         >
-          Ajouter la recette
+          {recipe ? "Modifier la recette" : "Ajouter la recette"}
         </Button>
       </form>
 

@@ -1,13 +1,12 @@
 import CategoryMenu from "@/components/header/CategoryMenu";
 import { getCurrentUser } from "../actions/userActions";
-import Footer from "@/components/Footer";
+import { Loader } from "@/components/ui/loader";
 
 export const Home = async () => {
   const currentUser = await getCurrentUser();
   return (
     <div>
       <CategoryMenu />
-      <Footer />
     </div>
   );
 };
