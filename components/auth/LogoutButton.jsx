@@ -1,10 +1,10 @@
 "use client";
 
-import { signOut } from "next-auth/react";
-import { LogOut } from "lucide-react";
-import { Loader } from "@/components/ui/loader";
-import { useTransition } from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Loader } from "@/components/ui/loader";
+import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { useTransition } from "react";
 
 export const LogoutButton = () => {
   const [isPending, startTransition] = useTransition();
@@ -17,9 +17,9 @@ export const LogoutButton = () => {
       }}
     >
       {isPending ? (
-        <Loader className="mx-2 w-5 marker:h-5 text-myblue" />
+        <Loader className="mx-2 w-5 text-myblue marker:h-5" />
       ) : (
-        <LogOut className="mx-2 w-5 marker:h-5 text-myblue" />
+        <LogOut className="mx-2 w-5 text-myblue marker:h-5" />
       )}
       Déconnexion
     </DropdownMenuItem>

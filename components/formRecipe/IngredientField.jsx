@@ -1,13 +1,13 @@
 "use client";
 
 import { XCircle } from "lucide-react";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 const IngredientField = ({ register, errors, index, removeIngredient }) => {
   return (
     <div>
-      <div className="flex gap-x-3 mb-2">
+      <div className="mb-2 flex gap-x-3">
         <Input
           className={`w-2/5 placeholder:font-light ${errors.ingredients?.[index]?.quantity ? "border-red-500" : ""}`}
           type="text"
@@ -36,7 +36,7 @@ const IngredientField = ({ register, errors, index, removeIngredient }) => {
         </Button>
       </div>
       {errors.ingredients && errors.ingredients[index]?.name && (
-        <p className="text-sm ml-3 mb-3 font-light text-red-500">
+        <p className="mb-3 ml-3 text-sm font-light text-red-500">
           {errors.ingredients[index].name.message}
         </p>
       )}

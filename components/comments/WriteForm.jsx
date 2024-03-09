@@ -1,14 +1,14 @@
 "use client";
 
+import { createComment } from "@/app/actions/commentActions";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { PostLayout } from "./PostLayout";
 import CommentSchema from "@/lib/commentSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Textarea } from "../ui/textarea";
-import { createComment } from "@/app/actions/commentActions";
-import { useToast } from "../ui/use-toast";
 import { CheckCircle2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Textarea } from "../ui/textarea";
+import { useToast } from "../ui/use-toast";
+import { PostLayout } from "./PostLayout";
 
 export const WriteForm = ({ user, recipe }) => {
   const { toast } = useToast();

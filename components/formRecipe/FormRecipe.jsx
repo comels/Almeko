@@ -1,12 +1,19 @@
 "use client";
 
-import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
+import RecipeSchema from "../../lib/recipeSchema";
 import IngredientField from "./IngredientField";
 import InstructionField from "./InstructionField";
-import RecipeSchema from "../../lib/recipeSchema";
 
+import { createRecipe, updateRecipe } from "@/app/actions/recipeActions";
+import { CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -15,14 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
-import { Badge } from "../ui/badge";
 import { useToast } from "../ui/use-toast";
-import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { createRecipe, updateRecipe } from "@/app/actions/recipeActions";
 
 export const categories = [
   { value: "aperos", label: "Apéros" },

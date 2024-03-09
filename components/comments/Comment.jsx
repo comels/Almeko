@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { PostLayout } from "./PostLayout";
-import { DeletePostButton } from "./DeletePostButton";
 import { getCurrentUser, getUserById } from "@/app/actions/userActions";
+import Link from "next/link";
+import { DeletePostButton } from "./DeletePostButton";
+import { PostLayout } from "./PostLayout";
 
 export const Comment = async ({ comment }) => {
   const user = await getUserById(comment.authorId);

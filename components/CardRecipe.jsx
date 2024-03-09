@@ -1,12 +1,11 @@
 "use client";
 
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { CheckCircle2, Minus, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { deleteRecipe } from "@/app/actions/recipeActions";
+import { CheckCircle2, Minus, Plus } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { WriteForm } from "./comments/WriteForm";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,8 +17,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import Link from "next/link";
-import { WriteForm } from "./comments/WriteForm";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 
 const CardRecipe = ({ recipe, user }) => {
   const { toast } = useToast();
@@ -91,7 +91,7 @@ const CardRecipe = ({ recipe, user }) => {
 
   return (
     <div key={recipe.id}>
-      <div className="m-auto flex max-w-xl flex-col rounded-lg border-8 border-myblue bg-white pb-10">
+      <div className="m-auto mx-7 flex max-w-xl flex-col rounded-lg border-8 border-myblue bg-white pb-10">
         {/* HEADER DE LA RECETTE */}
         <div className="mx-10 my-4">
           <div className="mb-5 flex items-center justify-center gap-3">
@@ -121,7 +121,7 @@ const CardRecipe = ({ recipe, user }) => {
           </div>
         </div>
         {/* INGREDIENTS */}
-        <div className="mx-10 my-5">
+        <div className="mx-5 my-5">
           <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
             Ingrédients
           </h1>
@@ -144,20 +144,17 @@ const CardRecipe = ({ recipe, user }) => {
           </div>
         </div>
         {/* INSTRUCTIONS */}
-        <div className="mx-10">
+        <div className="mx-5">
           <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
             Préparation
           </h1>
           <div>
             {recipe.instructions.map((instruction, index) => (
-              <div key={index} className="mb-2 flex gap-2">
+              <div key={index} className="mb-4 flex flex-col">
                 {recipe.instructions.length > 0 && (
-                  <div className="font-bold">
-                    {index + 1}
-                    {"."}
-                  </div>
+                  <div className="font-bold tracking-tight">{`Étape ${index + 1}`}</div>
                 )}
-                <p className="text-start text-neutral-900">
+                <p className="text-start font-light text-neutral-900">
                   {instruction.content}
                 </p>
               </div>

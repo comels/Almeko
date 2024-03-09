@@ -1,9 +1,9 @@
 import { buttonVariants } from "@/components/ui/button";
 import clsx from "clsx";
-import { Home, PlusSquare, User2 } from "lucide-react";
+import { Home, PlusSquare } from "lucide-react";
 import Link from "next/link";
-import { MenuDeroulant } from "./auth/MenuDeroulant";
 import { LoginButton } from "./auth/LoginButton";
+import { MenuDeroulant } from "./auth/MenuDeroulant";
 
 const Footer = ({ currentUser }) => {
   return (

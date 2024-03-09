@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { Input } from "../ui/input";
-import { Button, buttonVariants } from "../ui/button";
-import { Search } from "lucide-react";
-import { MenuDeroulant } from "../auth/MenuDeroulant";
-import { LoginButton } from "../auth/LoginButton";
 import clsx from "clsx";
+import { Search } from "lucide-react";
+import Link from "next/link";
+import { LoginButton } from "../auth/LoginButton";
+import { MenuDeroulant } from "../auth/MenuDeroulant";
+import { Button, buttonVariants } from "../ui/button";
+import { Input } from "../ui/input";
 
 const Navbar = ({ currentUser }) => {
   return (

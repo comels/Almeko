@@ -2,8 +2,8 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { categories } from "../formRecipe/FormRecipe";
-import CategoryItem from "./CategoryItem";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import CategoryItem from "./CategoryItem";
 
 const CategoryMenu = () => {
   const params = useSearchParams();

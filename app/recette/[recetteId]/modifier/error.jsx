@@ -1,7 +1,7 @@
 "use client";
 
-import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 export default function Error() {
   return (
@@ -13,7 +13,7 @@ export default function Error() {
           Vous ne pouvez pas modifier les recettes des autres.
         </AlertDescription>
         <AlertDescription>
-          Si c'est votre recette, assurez-vous d'être connecté.
+          Si c&aposest votre recette, assurez-vous d&aposêtre connecté.
         </AlertDescription>
       </Alert>
     </div>

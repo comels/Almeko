@@ -3,7 +3,7 @@
 import { deleteComment } from "@/app/actions/commentActions";
 import { Loader } from "@/components/ui/loader";
 import { Trash } from "lucide-react";
-import React, { useTransition } from "react";
+import { useTransition } from "react";
 
 export const DeletePostButton = ({ commentId }) => {
   const [isPending, starTransaction] = useTransition();

@@ -6,7 +6,7 @@ import { Textarea } from "../ui/textarea";
 
 const InstructionField = ({ register, errors, index, removeInstruction }) => (
   <div>
-    <div className="flex gap-x-3 mb-2">
+    <div className="mb-2 flex gap-x-3">
       <Textarea
         className={`placeholder:font-light ${errors.instructions?.[index]?.content ? "border-red-500" : ""}`}
         type="text"
@@ -23,7 +23,7 @@ const InstructionField = ({ register, errors, index, removeInstruction }) => (
       </Button>
     </div>
     {errors.instructions && errors.instructions[index]?.content && (
-      <p className="text-sm ml-3 mb-3 font-light text-red-500">
+      <p className="mb-3 ml-3 text-sm font-light text-red-500">
         {errors.instructions[index].content.message}
       </p>
     )}

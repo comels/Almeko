@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "../ui/button";
-import { useCallback } from "react";
-import qs from "query-string";
 import { useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
+import { useCallback } from "react";
+import { Button } from "../ui/button";
 
 const CategoryItem = ({ label, value, selected }) => {
   const router = useRouter();
@@ -29,7 +29,7 @@ const CategoryItem = ({ label, value, selected }) => {
         url: "/",
         query: updatedQuery,
       },
-      { skipNull: true }
+      { skipNull: true },
     );
 
     router.push(url);

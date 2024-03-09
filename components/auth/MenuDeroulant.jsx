@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { EggFried, Heart, PlusSquare, User2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { EggFried, Heart, PlusSquare, User2 } from "lucide-react";
 import Link from "next/link";
 import { LogoutButton } from "./LogoutButton";
 

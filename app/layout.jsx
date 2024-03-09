@@ -1,8 +1,8 @@
-import { Header } from "@/components/header/Header";
-import "./globals.css";
-import { getCurrentUser } from "./actions/userActions";
-import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/Footer";
+import { Header } from "@/components/header/Header";
+import { Toaster } from "@/components/ui/toaster";
+import { getCurrentUser } from "./actions/userActions";
+import "./globals.css";
 
 export const metadata = {
   title: "Almeko",
