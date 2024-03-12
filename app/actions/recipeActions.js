@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "./userActions";
 
 // Fonction pour créer une recette
 export const createRecipe = async (data) => {
@@ -60,4 +61,71 @@ export const updateRecipe = async (id, data) => {
   });
   console.log("Recipe updated");
   revalidatePath("/");
+};
+
+// Fonction pour ajouter une recette aux favoris
+export const addFavorite = async (id) => {
+  const user = await getCurrentUser();
+  if (!user) {
+    console.error(
+      "Vous devez être connecté pour ajouter une recette aux favoris.",
+    );
+    return;
+  }
+  const isLiked = await prisma.like.findFirst({
+    where: {
+      recipeId: id,
+      userId: user.id,
+    },
+  });
+  if (isLiked) {
+    await prisma.like.delete({
+      where: {
+        id: isLiked.id,
+      },
+    });
+  } else {
+    await prisma.like.create({
+      data: {
+        recipeId: id,
+        userId: user.id,
+      },
+    });
+  }
+  console.log("Ajout de la recette aux favoris :", id);
+  revalidatePath("/");
+};
+
+// Fonction pour récupérer les recettes favorites d'un utilisateur
+export const getFavorites = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    console.error("Vous devez être connecté pour voir vos recettes favorites.");
+    return;
+  }
+  const favorites = await prisma.like.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      recipe: true,
+    },
+  });
+  return favorites.map((favorite) => favorite.recipe);
+};
+
+// Fonction pour savoir si une recette est dans les favoris
+export const recipeFavorite = async (recipeId) => {
+  const user = await getCurrentUser();
+  if (!user) {
+    console.error("Vous devez être connecté pour voir vos recettes favorites.");
+    return;
+  }
+  const isLiked = await prisma.like.findFirst({
+    where: {
+      recipeId: recipeId,
+      userId: user.id,
+    },
+  });
+  return isLiked ? true : false;
 };

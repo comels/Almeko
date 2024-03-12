@@ -14,13 +14,15 @@ const Footer = ({ currentUser }) => {
       >
         <Home className="h-5  w-5 text-myblue" />
       </Link>
-      <Link
-        href="/recette/ajouter"
-        className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}
-      >
-        <PlusSquare className="h-5 w-5 text-myblue" />
-      </Link>
-      <div className="flex flex-1 justify-center">
+      {currentUser && (
+        <Link
+          href="/recette/ajouter"
+          className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}
+        >
+          <PlusSquare className="h-5 w-5 text-myblue" />
+        </Link>
+      )}
+      <div className="flex flex-1 justify-center px-2">
         {currentUser ? <MenuDeroulant /> : <LoginButton />}
       </div>
     </div>

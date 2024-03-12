@@ -8,10 +8,12 @@ import IngredientField from "./IngredientField";
 import InstructionField from "./InstructionField";
 
 import { createRecipe, updateRecipe } from "@/app/actions/recipeActions";
+import { cn } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
 import {
@@ -302,14 +304,25 @@ const FormRecipe = ({ currentUser, recipe }) => {
           </Button>
         </div>
         {/* BOUTON DE SOUMISSION */}
-        <Button
-          variant="blue"
-          disabled={isSubmitting}
-          className="w-full"
-          type="submit"
-        >
-          {recipe ? "Modifier la recette" : "Ajouter la recette"}
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            variant="blue"
+            disabled={isSubmitting}
+            className="w-full"
+            type="submit"
+          >
+            {recipe ? "Modifier la recette" : "Ajouter la recette"}
+          </Button>
+
+          {recipe && (
+            <Link
+              href={`/recette/${recipe.id}`}
+              className={cn(buttonVariants({ variant: "outline" }), "w-full")}
+            >
+              Annuler
+            </Link>
+          )}
+        </div>
       </form>
 
       {/* PARTIE DROITE : RECIPE CARD */}
@@ -321,11 +334,6 @@ const FormRecipe = ({ currentUser, recipe }) => {
               <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
                 {watchedName}
               </h1>
-              {currentUser && (
-                <p className="text-xs font-bold text-myblue">
-                  {currentUser.name}
-                </p>
-              )}
             </div>
             <div className="flex items-center justify-center gap-2">
               {watchedCategory && (
@@ -349,7 +357,7 @@ const FormRecipe = ({ currentUser, recipe }) => {
             </div>
           </div>
           {/* INGREDIENTS */}
-          <div className="mx-10 my-5">
+          <div className="mx-5 my-5">
             <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
               Ingrédients
             </h1>
@@ -372,20 +380,19 @@ const FormRecipe = ({ currentUser, recipe }) => {
             </div>
           </div>
           {/* INSTRUCTIONS */}
-          <div className="mx-10">
+          <div className="mx-5">
             <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
               Préparation
             </h1>
             <div>
               {watchedInstructions.map((instruction, index) => (
-                <div key={index} className="mb-2 flex gap-2">
+                <div key={index} className="mb-4 flex flex-col">
                   {watchedInstructions.length > 0 && (
-                    <div className="font-bold">
-                      {index + 1}
-                      {"."}
+                    <div className="font-bold tracking-tight">
+                      {`Étape ${index + 1}`}
                     </div>
                   )}
-                  <p className="text-start text-neutral-900">
+                  <p className="text-start font-light text-neutral-900">
                     {instruction.content}
                   </p>
                 </div>

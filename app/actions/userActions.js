@@ -11,7 +11,7 @@ export const getSession = async () => {
 export const getCurrentUser = async () => {
   try {
     const session = await getSession();
-    if (!session?.user?.email) return null;
+    if (!session?.user?.email) throw new Error("Session not found");
 
     const currentUser = await prisma.user.findUnique({
       where: {
@@ -47,4 +47,15 @@ export const getUserById = async (id) => {
     },
   });
   return user;
+};
+
+// Fonction pour mettre à jour un utilisateur
+export const updateUser = async (id, data) => {
+  await prisma.user.update({
+    where: {
+      id,
+    },
+    data,
+  });
+  return "/profil";
 };

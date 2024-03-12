@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EggFried, Heart, PlusSquare, User2 } from "lucide-react";
+import { EggFried, Heart, Menu, PlusSquare, User2 } from "lucide-react";
 import Link from "next/link";
 import { LogoutButton } from "./LogoutButton";
 
@@ -17,7 +17,7 @@ export const MenuDeroulant = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="w-full" size="sm" variant="ghost">
-          <User2 className="h-5 w-5 text-myblue" />
+          <Menu className="h-5 w-5 text-myblue" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-3 sm:mr-10">

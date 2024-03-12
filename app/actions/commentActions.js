@@ -24,6 +24,9 @@ export const getComments = async (recipeId) => {
     where: {
       recipeId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return comments;
 };

@@ -21,7 +21,7 @@ export const LoginButton = ({ text }) => {
       ) : (
         <LogIn className="h-5 w-5 text-myblue" />
       )}
-      <span className="ml-2 text-base font-bold">{text}</span>
+      <span className="ml-2 text-myblue">{text}</span>
     </Button>
   );
 };

@@ -13,7 +13,7 @@ export const LogoutButton = () => {
     <DropdownMenuItem
       className="font-medium"
       onClick={() => {
-        startTransition(() => signOut());
+        startTransition(() => signOut({ redirect: true, callbackUrl: "/" }));
       }}
     >
       {isPending ? (

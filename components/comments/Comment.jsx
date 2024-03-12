@@ -14,7 +14,7 @@ export const Comment = async ({ comment }) => {
           <p key={index}>{text}</p>
         ))}
       </Link>
-      <div className="flex items-center gap-2">
+      <div className="flex justify-end">
         {comment.authorId === currentUser?.id ? (
           <DeletePostButton commentId={comment.id} />
         ) : null}

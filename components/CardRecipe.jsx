@@ -1,10 +1,16 @@
 "use client";
 
-import { deleteRecipe } from "@/app/actions/recipeActions";
+import { addFavorite, deleteRecipe } from "@/app/actions/recipeActions";
 import { CheckCircle2, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import {
+  TbHeart,
+  TbHeartFilled,
+  TbMessageCircle2,
+  TbMessageCircle2Filled,
+} from "react-icons/tb";
 import { WriteForm } from "./comments/WriteForm";
 import {
   AlertDialog,
@@ -19,17 +25,19 @@ import {
 } from "./ui/alert-dialog";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Loader } from "./ui/loader";
 import { useToast } from "./ui/use-toast";
 
-const CardRecipe = ({ recipe, user }) => {
+const CardRecipe = ({ recipe, user, isFavorite, authorRecipe }) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
-
+  const [isCommenting, setIsCommenting] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [servings, setServings] = useState(recipe.servings);
   const [ingredients, setIngredients] = useState(recipe.ingredients);
 
-  // Fonction pour formater les nombres
+  // Fonction pour formater les nombres (pas de décimales pour les entiers, 1 décimale pour les flottants)
   const formatQuantity = (quantity) => {
     const number = parseFloat(quantity);
     if (Number.isInteger(number)) {
@@ -39,7 +47,7 @@ const CardRecipe = ({ recipe, user }) => {
     }
   };
 
-  // Ajuster les quantités d'ingrédients
+  // Fonction pour ajuster les quantités d'ingrédients
   const adjustIngredientQuantities = (newServings) => {
     const adjustedIngredients = recipe.ingredients.map((ingredient) => {
       const originalQuantity = parseFloat(ingredient.quantity) || 0;
@@ -89,15 +97,30 @@ const CardRecipe = ({ recipe, user }) => {
     setIsDeleting(false);
   };
 
+  // Fonction pour ajouter ou supprimer les recette des favoris
+  const handleFavorite = async (id) => {
+    try {
+      await addFavorite(id);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout aux favoris :", error);
+      toast({
+        icon: <CheckCircle2 className="text-red-600" />,
+        title: "Une erreur est survenue.",
+        description: "Veuillez réessayer.",
+      });
+    }
+  };
+
   return (
-    <div key={recipe.id}>
-      <div className="m-auto mx-7 flex max-w-xl flex-col rounded-lg border-8 border-myblue bg-white pb-10">
+    <div>
+      <div className="mx-7 flex flex-col rounded-lg border-8 border-myblue bg-white pb-10">
         {/* HEADER DE LA RECETTE */}
         <div className="mx-10 my-4">
-          <div className="mb-5 flex items-center justify-center gap-3">
+          <div className="mb-5 flex flex-col items-center justify-center gap-3">
             <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
               {recipe.name}
             </h1>
+            <p className="text-xs font-bold text-myblue">{authorRecipe.name}</p>
           </div>
           <div className="mb-5 flex items-center justify-center gap-2">
             {recipe.vegetarian &&
@@ -200,7 +223,69 @@ const CardRecipe = ({ recipe, user }) => {
           </div>
         )}
       </div>
-      {user && <WriteForm user={user} recipe={recipe} />}
+      {/* FORMULAIRE DE COMMENTAIRE */}
+      <div>
+        <div className="ml-10 mt-5 flex items-center gap-2">
+          <Button
+            onClick={() => {
+              setIsCommenting(!isCommenting);
+            }}
+            size="sm"
+            variant="ghost"
+          >
+            {isCommenting ? (
+              <div className="flex items-center gap-2">
+                <TbMessageCircle2Filled className="h-7 w-7 text-myblue" />
+                <span className="text-base font-light text-myblue">
+                  Commenter
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <TbMessageCircle2 className="h-7 w-7 text-myblue" />
+                <span className="text-base font-light text-myblue">
+                  Commenter
+                </span>
+              </div>
+            )}
+          </Button>
+          <Button
+            onClick={() => {
+              startTransition(() => {
+                handleFavorite(recipe.id);
+              });
+            }}
+            size="sm"
+            variant="ghost"
+          >
+            {!isFavorite ? (
+              <div className="flex items-center gap-2">
+                {isPending ? (
+                  <Loader className="h-7 w-7 text-myblue" />
+                ) : (
+                  <TbHeart className="h-7 w-7 text-myblue" />
+                )}
+                <span className="text-base font-light text-myblue">
+                  Ajouter aux favoris
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                {isPending ? (
+                  <Loader className="h-7 w-7 text-myblue" />
+                ) : (
+                  <TbHeartFilled className="h-7 w-7 text-myblue" />
+                )}
+                <span className="text-base font-light text-myblue">
+                  Retirer des favoris
+                </span>
+              </div>
+            )}
+          </Button>
+        </div>
+
+        {user && isCommenting && <WriteForm user={user} recipe={recipe} />}
+      </div>
     </div>
   );
 };

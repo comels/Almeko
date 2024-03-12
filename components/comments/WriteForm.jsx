@@ -46,7 +46,7 @@ export const WriteForm = ({ user, recipe }) => {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-xl">
+    <div className="mx-7 mt-5 max-w-4xl">
       <PostLayout user={user}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Textarea {...register("content")} />
@@ -55,6 +55,7 @@ export const WriteForm = ({ user, recipe }) => {
             variant="blue"
             className="mt-3 w-full"
             type="submit"
+            size="sm"
             disabled={isSubmitting}
           >
             Publier

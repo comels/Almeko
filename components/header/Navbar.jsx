@@ -16,28 +16,32 @@ const Navbar = ({ currentUser }) => {
           Almeko
         </h2>
       </Link>
-      <div className="mr-5 flex w-full max-w-xl rounded-md border pl-2 sm:mr-0">
+      <div className=" flex w-full max-w-xl rounded-md border pl-2 sm:mr-0">
         <Input className=" border-none" placeholder="Rechercher" />
         <Button variant="ghost">
           <Search className="h-5 w-5 text-myblue" />
         </Button>
       </div>
-      <div className="flex items-center gap-4">
-        <Link
-          href="/recette/ajouter"
-          className={clsx(
-            buttonVariants({ variant: "blue", size: "sm" }),
-            "hidden md:flex",
-          )}
-        >
-          Ajouter une recette
-        </Link>
+      <div className="flex items-center md:gap-4">
+        {currentUser ? (
+          <Link
+            href="/recette/ajouter"
+            className={clsx(
+              buttonVariants({ variant: "blue", size: "sm" }),
+              "hidden md:flex",
+            )}
+          >
+            Ajouter une recette
+          </Link>
+        ) : null}
         {currentUser ? (
           <div className="hidden md:flex">
             <MenuDeroulant />
           </div>
         ) : (
-          <LoginButton />
+          <div className="hidden md:flex">
+            <LoginButton text="Connexion" />
+          </div>
         )}
       </div>
     </div>
