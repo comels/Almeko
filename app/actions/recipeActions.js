@@ -35,12 +35,17 @@ export const deleteRecipe = async (id) => {
 
 // Fonction pour trouver une recette par son id
 export const findRecipeById = async (id) => {
-  const recipe = await prisma.recipe.findUnique({
-    where: {
-      id,
-    },
-  });
-  return recipe;
+  try {
+    const recipe = await prisma.recipe.findUnique({
+      where: {
+        id,
+      },
+    });
+    return recipe;
+  } catch (error) {
+    console.error("Recette introuvable :", error);
+    return null;
+  }
 };
 
 // Fonction pour modifier une recette

@@ -9,18 +9,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { notFound } from "next/navigation";
 
-const UpdateRecipe = async ({ params }) => {
+const Recipe = async ({ params }) => {
   const recipe = await findRecipeById(params.recetteId);
+  if (!recipe) return notFound();
   const currentUser = await getCurrentUser();
-  const comments = await getComments(recipe.id);
-  const isFavorite = await recipeFavorite(recipe.id);
-  const authorRecipe = await getUserById(recipe.authorId);
+  const comments = await getComments(recipe?.id);
+  const isFavorite = await recipeFavorite(recipe?.id);
+  const authorRecipe = await getUserById(recipe?.authorId);
 
   return (
     <div className="mx-auto mt-14 max-w-2xl">
       <CardRecipe
-        user={currentUser}
+        currentUser={currentUser}
         recipe={recipe}
         isFavorite={isFavorite}
         authorRecipe={authorRecipe}
@@ -48,4 +50,4 @@ const UpdateRecipe = async ({ params }) => {
   );
 };
 
-export default UpdateRecipe;
+export default Recipe;

@@ -1,12 +1,11 @@
 import { CardProfile } from "@/components/CardProfile";
-import { getCurrentUser, getUserRecipes } from "../actions/userActions";
+import { getCurrentUser } from "../actions/userActions";
 
 export const Profil = async () => {
   const currentUser = await getCurrentUser();
-  const userRecipes = await getUserRecipes();
   return (
     <div>
-      <CardProfile currentUser={currentUser} userRecipes={userRecipes} />
+      <CardProfile currentUser={currentUser} />
     </div>
   );
 };

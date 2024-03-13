@@ -10,18 +10,18 @@ import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 import { PostLayout } from "./PostLayout";
 
-export const WriteForm = ({ user, recipe }) => {
+export const WriteForm = ({ currentUser, recipe }) => {
   const { toast } = useToast();
 
   const {
     register,
     handleSubmit, // This function is used to submit the form and prevent the default behavior of the browser
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     reset,
   } = useForm({
     resolver: zodResolver(CommentSchema),
     defaultValues: {
-      authorId: user.id,
+      authorId: currentUser.id,
       recipeId: recipe.id,
       content: "",
     },
@@ -47,7 +47,7 @@ export const WriteForm = ({ user, recipe }) => {
 
   return (
     <div className="mx-7 mt-5 max-w-4xl">
-      <PostLayout user={user}>
+      <PostLayout user={currentUser}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Textarea {...register("content")} />
           {/* BOUTON DE SOUMISSION */}

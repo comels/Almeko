@@ -1,10 +1,9 @@
-import { getUserRecipes } from "@/app/actions/userActions";
+import { getCurrentUser } from "@/app/actions/userActions";
 import ListRecipes from "@/components/ListRecipe";
 
 const MyRecipes = async () => {
-  const userRecipes = await getUserRecipes();
-
-  if (!userRecipes) return <div className="mt-14">Chargement...</div>;
+  const currentUser = await getCurrentUser();
+  if (!currentUser) return null;
 
   return (
     <div className="mt-14">
@@ -12,7 +11,7 @@ const MyRecipes = async () => {
         Mes recettes
       </h1>
       <div className="mx-5 grid grid-cols-2 gap-5 lg:grid-cols-4">
-        {userRecipes.map((recipe) => (
+        {currentUser.recipes.map((recipe) => (
           <div key={recipe.id}>
             <ListRecipes recipe={recipe} />
           </div>

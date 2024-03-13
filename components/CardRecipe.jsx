@@ -28,7 +28,7 @@ import { Button } from "./ui/button";
 import { Loader } from "./ui/loader";
 import { useToast } from "./ui/use-toast";
 
-const CardRecipe = ({ recipe, user, isFavorite, authorRecipe }) => {
+const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -184,7 +184,7 @@ const CardRecipe = ({ recipe, user, isFavorite, authorRecipe }) => {
             ))}
           </div>
         </div>
-        {user && recipe.authorId === user.id && (
+        {currentUser && recipe.authorId === currentUser.id && (
           <div className="mt-10 flex justify-center gap-5">
             {/* Bouton de modification */}
             <Link href={`/recette/${recipe.id}/modifier`}>
@@ -224,68 +224,72 @@ const CardRecipe = ({ recipe, user, isFavorite, authorRecipe }) => {
         )}
       </div>
       {/* FORMULAIRE DE COMMENTAIRE */}
-      <div>
-        <div className="ml-10 mt-5 flex items-center gap-2">
-          <Button
-            onClick={() => {
-              setIsCommenting(!isCommenting);
-            }}
-            size="sm"
-            variant="ghost"
-          >
-            {isCommenting ? (
-              <div className="flex items-center gap-2">
-                <TbMessageCircle2Filled className="h-7 w-7 text-myblue" />
-                <span className="text-base font-light text-myblue">
-                  Commenter
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <TbMessageCircle2 className="h-7 w-7 text-myblue" />
-                <span className="text-base font-light text-myblue">
-                  Commenter
-                </span>
-              </div>
-            )}
-          </Button>
-          <Button
-            onClick={() => {
-              startTransition(() => {
-                handleFavorite(recipe.id);
-              });
-            }}
-            size="sm"
-            variant="ghost"
-          >
-            {!isFavorite ? (
-              <div className="flex items-center gap-2">
-                {isPending ? (
-                  <Loader className="h-7 w-7 text-myblue" />
-                ) : (
-                  <TbHeart className="h-7 w-7 text-myblue" />
-                )}
-                <span className="text-base font-light text-myblue">
-                  Ajouter aux favoris
-                </span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                {isPending ? (
-                  <Loader className="h-7 w-7 text-myblue" />
-                ) : (
-                  <TbHeartFilled className="h-7 w-7 text-myblue" />
-                )}
-                <span className="text-base font-light text-myblue">
-                  Retirer des favoris
-                </span>
-              </div>
-            )}
-          </Button>
-        </div>
+      {currentUser && (
+        <div>
+          <div className="ml-10 mt-5 flex items-center gap-2">
+            <Button
+              onClick={() => {
+                setIsCommenting(!isCommenting);
+              }}
+              size="sm"
+              variant="ghost"
+            >
+              {isCommenting ? (
+                <div className="flex items-center gap-2">
+                  <TbMessageCircle2Filled className="h-7 w-7 text-myblue" />
+                  <span className="text-base font-light text-myblue">
+                    Commenter
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <TbMessageCircle2 className="h-7 w-7 text-myblue" />
+                  <span className="text-base font-light text-myblue">
+                    Commenter
+                  </span>
+                </div>
+              )}
+            </Button>
+            <Button
+              onClick={() => {
+                startTransition(() => {
+                  handleFavorite(recipe.id);
+                });
+              }}
+              size="sm"
+              variant="ghost"
+            >
+              {!isFavorite ? (
+                <div className="flex items-center gap-2">
+                  {isPending ? (
+                    <Loader className="h-7 w-7 text-myblue" />
+                  ) : (
+                    <TbHeart className="h-7 w-7 text-myblue" />
+                  )}
+                  <span className="text-base font-light text-myblue">
+                    Ajouter aux favoris
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  {isPending ? (
+                    <Loader className="h-7 w-7 text-myblue" />
+                  ) : (
+                    <TbHeartFilled className="h-7 w-7 text-myblue" />
+                  )}
+                  <span className="text-base font-light text-myblue">
+                    Retirer des favoris
+                  </span>
+                </div>
+              )}
+            </Button>
+          </div>
 
-        {user && isCommenting && <WriteForm user={user} recipe={recipe} />}
-      </div>
+          {isCommenting && (
+            <WriteForm currentUser={currentUser} recipe={recipe} />
+          )}
+        </div>
+      )}
     </div>
   );
 };

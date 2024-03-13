@@ -14,7 +14,6 @@ export const createComment = async (recipeId, data) => {
       recipeId: recipeId,
     },
   });
-  console.log("Comment created");
   revalidatePath(`/recette/${recipeId}`);
 };
 

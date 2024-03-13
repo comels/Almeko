@@ -40,7 +40,7 @@ export const MenuDeroulant = () => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/favoris" className="font-medium">
+          <Link href="/" className="font-medium">
             <Heart className="mx-2 w-5 text-myblue marker:h-5" />
             Favoris
           </Link>

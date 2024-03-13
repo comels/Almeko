@@ -5,7 +5,7 @@ import Link from "next/link";
 import ListRecipes from "./ListRecipe";
 import { buttonVariants } from "./ui/button";
 
-export const CardProfile = ({ currentUser, userRecipes }) => {
+export const CardProfile = ({ currentUser }) => {
   const removeHTTP = (url) => {
     return url.replace(/(^\w+:|^)\/\//, "");
   };
@@ -55,7 +55,7 @@ export const CardProfile = ({ currentUser, userRecipes }) => {
         </div>
       ) : null}
       <div className="mx-5 grid grid-cols-2 gap-5 lg:grid-cols-4">
-        {userRecipes.map((recipe) => (
+        {currentUser.recipes.map((recipe) => (
           <div key={recipe.id}>
             <ListRecipes recipe={recipe} />
           </div>

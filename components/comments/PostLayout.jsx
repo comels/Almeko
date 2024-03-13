@@ -19,7 +19,8 @@ export const PostLayout = ({ user, children, createdAt, className }) => {
                 {user.name ? user.name.slice(0, 2).toUpperCase() : "UN"}
               </AvatarFallback>
             </Avatar>
-            <Link href={`/users/${user.id}`}>
+            {/* <Link href={`/users/${user.id}`}> */}
+            <Link href={"/"}>
               <p className="mr-auto font-bold text-card-foreground">
                 {user.name}
               </p>
