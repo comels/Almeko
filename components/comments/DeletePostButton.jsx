@@ -25,7 +25,7 @@ export const DeletePostButton = ({ commentId }) => {
       {/* Bouton de suppression */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size="sm" variant="ghost">
+          <Button className="p-0" size="sm" variant="ghost">
             {isPending ? <Loader size={15} /> : <Trash size={15} />}
           </Button>
         </AlertDialogTrigger>

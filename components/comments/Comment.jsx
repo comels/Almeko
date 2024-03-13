@@ -1,5 +1,4 @@
 import { getCurrentUser, getUserById } from "@/app/actions/userActions";
-import Link from "next/link";
 import { DeletePostButton } from "./DeletePostButton";
 import { PostLayout } from "./PostLayout";
 
@@ -9,11 +8,11 @@ export const Comment = async ({ comment }) => {
 
   return (
     <PostLayout createdAt={comment.createdAt} user={user}>
-      <Link href={"/"} className="mt-2 text-sm text-foreground">
+      <div className="mt-2 text-foreground">
         {comment.content.split("\n").map((text, index) => (
           <p key={index}>{text}</p>
         ))}
-      </Link>
+      </div>
       <div className="flex justify-end">
         {comment.authorId === currentUser?.id ? (
           <DeletePostButton commentId={comment.id} />

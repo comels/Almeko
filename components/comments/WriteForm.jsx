@@ -15,7 +15,7 @@ export const WriteForm = ({ currentUser, recipe }) => {
 
   const {
     register,
-    handleSubmit, // This function is used to submit the form and prevent the default behavior of the browser
+    handleSubmit,
     formState: { isSubmitting },
     reset,
   } = useForm({

@@ -35,46 +35,47 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
   const [isCommenting, setIsCommenting] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [servings, setServings] = useState(recipe.servings);
-  const [ingredients, setIngredients] = useState(recipe.ingredients);
+  const [ingredients, setIngredients] = useState(
+    recipe.ingredients.map((ingredient) => ({
+      ...ingredient,
+      originalQuantity: parseFloat(ingredient.quantity) || 0, // Ajoutez un champ pour conserver la quantité originale
+    })),
+  );
 
-  // Fonction pour formater les nombres (pas de décimales pour les entiers, 1 décimale pour les flottants)
-  const formatQuantity = (quantity) => {
-    const number = parseFloat(quantity);
-    if (Number.isInteger(number)) {
-      return number.toString(); // Retourne le nombre sans décimales si c'est un entier
-    } else {
-      return number.toFixed(1); // Retourne le nombre avec une décimale si c'est un flottant
-    }
-  };
-
-  // Fonction pour ajuster les quantités d'ingrédients
+  // Ajuster les quantités d'ingrédients basé sur le nombre de servings
   const adjustIngredientQuantities = (newServings) => {
-    const adjustedIngredients = recipe.ingredients.map((ingredient) => {
-      const originalQuantity = parseFloat(ingredient.quantity) || 0;
-      const originalServings = recipe.servings;
-      const newQuantity = (originalQuantity / originalServings) * newServings;
+    const adjustedIngredients = ingredients.map((ingredient) => {
+      const { originalQuantity } = ingredient; // Utilisez la quantité originale pour le calcul
+      if (!originalQuantity) return ingredient;
+
+      // Calculez la nouvelle quantité basée sur le ratio des nouvelles portions par rapport aux portions originales
+      const newQuantity = (originalQuantity * newServings) / recipe.servings;
       return {
         ...ingredient,
-        quantity: formatQuantity(newQuantity), // Arrondir à 2 décimales
+        quantity:
+          newQuantity % 1 === 0
+            ? newQuantity.toString()
+            : newQuantity.toFixed(2),
       };
     });
     setIngredients(adjustedIngredients);
   };
 
-  // Fonctions pour augmenter nombre de parts
   const increaseServings = () => {
-    const newServings = servings + 1;
-    setServings(newServings);
-    adjustIngredientQuantities(newServings);
+    setServings((prevServings) => {
+      const newServings = prevServings + 1;
+      adjustIngredientQuantities(newServings);
+      return newServings;
+    });
   };
 
-  // Fonctions pour diminuer nombre de parts
   const decreaseServings = () => {
-    const newServings = servings > 1 ? servings - 1 : 1;
-    setServings(newServings);
-    adjustIngredientQuantities(newServings);
+    setServings((prevServings) => {
+      const newServings = prevServings - 1 > 0 ? prevServings - 1 : 1;
+      adjustIngredientQuantities(newServings);
+      return newServings;
+    });
   };
-
   // Fonction pour supprimer une recette
   const handleDelete = async (id) => {
     setIsDeleting(true);
@@ -96,6 +97,17 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
     }
     setIsDeleting(false);
   };
+
+  // Fonction pour capitaliser les phrases
+  function capitalizeSentences(text) {
+    return (
+      text
+        // Capitalise la première lettre du texte
+        .replace(/^[a-z]/, (firstLetter) => firstLetter.toUpperCase())
+        // Capitalise les lettres suivant un point et un espace
+        .replace(/\. +[a-z]/g, (match) => match.toUpperCase())
+    );
+  }
 
   // Fonction pour ajouter ou supprimer les recette des favoris
   const handleFavorite = async (id) => {
@@ -120,7 +132,7 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
             <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
               {recipe.name}
             </h1>
-            <p className="text-xs font-bold text-myblue">{authorRecipe.name}</p>
+            <p className="text-sm font-bold text-myblue">{authorRecipe.name}</p>
           </div>
           <div className="mb-5 flex items-center justify-center gap-2">
             {recipe.vegetarian &&
@@ -131,15 +143,15 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
               <Badge variant="secondary">Sans alcool</Badge>
             )}
           </div>
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-1">
             <Button variant="ghost" size="sm" onClick={decreaseServings}>
-              <Minus />
+              <Minus size={20} />
             </Button>
-            <Badge className="text-lg" variant="secondary">
-              {servings} pax
+            <Badge className="text-sm" variant="secondary">
+              {servings} pers.
             </Badge>
             <Button variant="ghost" size="sm" onClick={increaseServings}>
-              <Plus />
+              <Plus size={20} />
             </Button>
           </div>
         </div>
@@ -178,7 +190,7 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
                   <div className="font-bold tracking-tight">{`Étape ${index + 1}`}</div>
                 )}
                 <p className="text-start font-light text-neutral-900">
-                  {instruction.content}
+                  {capitalizeSentences(instruction.content)}
                 </p>
               </div>
             ))}

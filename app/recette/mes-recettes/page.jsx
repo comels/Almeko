@@ -13,7 +13,7 @@ const MyRecipes = async () => {
       <div className="mx-5 grid grid-cols-2 gap-5 lg:grid-cols-4">
         {currentUser.recipes.map((recipe) => (
           <div key={recipe.id}>
-            <ListRecipes recipe={recipe} />
+            <ListRecipes recipe={recipe} currentUserName={currentUser.name} />
           </div>
         ))}
       </div>
