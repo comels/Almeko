@@ -12,14 +12,14 @@ const Footer = ({ currentUser }) => {
         href="/"
         className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}
       >
-        <Home className="h-5  w-5 text-myblue" />
+        <Home className="text-color1  h-5 w-5" />
       </Link>
       {currentUser && (
         <Link
           href="/recette/ajouter"
           className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}
         >
-          <PlusSquare className="h-5 w-5 text-myblue" />
+          <PlusSquare className="text-color1 h-5 w-5" />
         </Link>
       )}
       <div className="flex flex-1 justify-center px-2">

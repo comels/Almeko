@@ -37,7 +37,7 @@ const Recipe = async ({ params }) => {
           <AccordionItem value="item-1" defaultOpen>
             <AccordionTrigger className="text-lg font-bold tracking-tighter">{`${comments.length} Commentaire${comments.length > 1 ? "s" : ""}`}</AccordionTrigger>
             <AccordionContent>
-              <div className="mb-5 divide-y-2 divide-muted">
+              <div className="mb-5 divide-y-2 divide-white">
                 {comments.map((comment) => (
                   <Comment comment={comment} key={comment.id} />
                 ))}

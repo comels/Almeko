@@ -18,6 +18,7 @@ export const getCurrentUser = async () => {
     },
     include: {
       recipes: true,
+      likes: true,
     },
   });
   return currentUser;
@@ -29,6 +30,9 @@ export const getUserById = async (id) => {
   const user = await prisma.user.findUnique({
     where: {
       id,
+    },
+    include: {
+      recipes: true,
     },
   });
   return user;
@@ -43,4 +47,10 @@ export const updateUser = async (id, data) => {
     data,
   });
   return "/profil";
+};
+
+// Fonction pour retrouver tous les utilisateurs
+export const getAllUsers = async () => {
+  const users = await prisma.user.findMany();
+  return users;
 };

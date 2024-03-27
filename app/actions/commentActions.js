@@ -37,6 +37,5 @@ export const deleteComment = async (commentId) => {
       id: commentId,
     },
   });
-  console.log("Comment deleted");
   revalidatePath("/");
 };

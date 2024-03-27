@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export const PostLayout = ({ user, children, createdAt, className }) => {
   return (
-    <div className={clsx("flex py-4 ", className)}>
+    <div className={clsx("flex py-4", className)}>
       <div className="flex w-full flex-col">
         <div className="mb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3">
@@ -19,8 +19,7 @@ export const PostLayout = ({ user, children, createdAt, className }) => {
                 {user.name ? user.name.slice(0, 2).toUpperCase() : "UN"}
               </AvatarFallback>
             </Avatar>
-            {/* <Link href={`/users/${user.id}`}> */}
-            <Link href={"/"}>
+            <Link href={`/user/${user.id}`}>
               <p className="mr-auto font-bold text-card-foreground">
                 {user.name}
               </p>
@@ -34,7 +33,7 @@ export const PostLayout = ({ user, children, createdAt, className }) => {
             ) : null}
           </div>
         </div>
-        {children}
+        <div className="px-5">{children}</div>
       </div>
     </div>
   );

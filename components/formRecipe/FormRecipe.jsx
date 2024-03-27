@@ -88,8 +88,6 @@ const FormRecipe = ({ currentUser, recipe }) => {
   const watchedServings = watch("servings");
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
       if (recipe) {
         // Si `recipe` existe, on met à jour la recette
@@ -110,14 +108,13 @@ const FormRecipe = ({ currentUser, recipe }) => {
       }
       router.refresh();
       reset();
-      router.push(`/recette/${recipe ? recipe.id : "mes-recettes"}`);
+      router.push(recipe ? `/recette/${recipe.id}` : "/profil");
     } catch (error) {
       toast({
         icon: <CheckCircle2 className="text-red-600" />,
         title: "Une erreur est survenue.",
         description: "Veuillez réessayer.",
       });
-      console.log(error);
     }
   };
 
@@ -327,7 +324,7 @@ const FormRecipe = ({ currentUser, recipe }) => {
 
       {/* PARTIE DROITE : RECIPE CARD */}
       <div className="flex-1">
-        <div className="mx-auto flex w-full max-w-xl flex-col rounded-lg border-8 border-myblue bg-white pb-10">
+        <div className="border-color1 mx-auto flex w-full max-w-xl flex-col rounded-lg border-8 bg-white pb-10">
           {/* HEADER DE LA RECETTE */}
           <div className="mx-10 my-4">
             <div className="mb-5 flex flex-col items-center justify-center gap-2">

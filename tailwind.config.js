@@ -17,9 +17,14 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        hogfish: ["Hogfish", "sans-serif"],
+      },
       colors: {
-        // myblue: "#2D45BD",
-        myblue: "#36499b",
+        // color1: "#2D45BD",
+        // color1: "#36499b",
+        color1: "#588157",
+        color2: "#FFD700",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

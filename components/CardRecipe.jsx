@@ -61,6 +61,7 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
     setIngredients(adjustedIngredients);
   };
 
+  // Fonction pour augmenter le nombre de personnes
   const increaseServings = () => {
     setServings((prevServings) => {
       const newServings = prevServings + 1;
@@ -69,6 +70,7 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
     });
   };
 
+  // Fonction pour diminuer les nombre de personnes
   const decreaseServings = () => {
     setServings((prevServings) => {
       const newServings = prevServings - 1 > 0 ? prevServings - 1 : 1;
@@ -86,9 +88,8 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
         title: "Votre recette a bien été supprimée.",
         description: "Merci !",
       });
-      router.push("/recette/mes-recettes");
+      router.push("/recette/favoris");
     } catch (error) {
-      console.error("Erreur lors de la suppression :", error);
       toast({
         icon: <CheckCircle2 className="text-red-600" />,
         title: "Une erreur est survenue.",
@@ -114,7 +115,6 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
     try {
       await addFavorite(id);
     } catch (error) {
-      console.error("Erreur lors de l'ajout aux favoris :", error);
       toast({
         icon: <CheckCircle2 className="text-red-600" />,
         title: "Une erreur est survenue.",
@@ -125,14 +125,19 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
 
   return (
     <div>
-      <div className="mx-7 flex flex-col rounded-lg border-8 border-myblue bg-white pb-10">
+      <div className="border-color1 mx-7 flex flex-col rounded-lg border-8 bg-white pb-10">
         {/* HEADER DE LA RECETTE */}
         <div className="mx-10 my-4">
           <div className="mb-5 flex flex-col items-center justify-center gap-3">
-            <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+            <h1 className="font-hogfish text-2xl font-extrabold tracking-widest sm:text-3xl">
               {recipe.name}
             </h1>
-            <p className="text-sm font-bold text-myblue">{authorRecipe.name}</p>
+            <Link
+              href={`/user/${authorRecipe.id}`}
+              className="text-color1 text-sm font-bold"
+            >
+              {authorRecipe.name}
+            </Link>
           </div>
           <div className="mb-5 flex items-center justify-center gap-2">
             {recipe.vegetarian &&
@@ -160,14 +165,14 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
           <h1 className="mb-5 text-xl font-extrabold tracking-tight sm:text-2xl">
             Ingrédients
           </h1>
-          <div>
+          <div className="grid grid-cols-3 items-center gap-3">
             {ingredients.map((ingredient, index) => (
               <div
                 key={index}
-                className="mb-1 flex items-center gap-3 text-neutral-800"
+                className="mb-1 flex flex-col items-center text-center text-neutral-800"
               >
                 {ingredient.quantity && (
-                  <div className="flex gap-1">
+                  <div className="text-color1 flex gap-1 text-sm font-bold">
                     {ingredient.quantity && <p>{ingredient.quantity}</p>}
                     {ingredient.measure && <p>{ingredient.measure}</p>}
                   </div>
@@ -207,7 +212,7 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
             {/* Bouton de suppression */}
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="blue" size="sm" disabled={isDeleting}>
+                <Button variant="outline" size="sm" disabled={isDeleting}>
                   {isDeleting ? "Suppression..." : "Supprimer"}
                 </Button>
               </AlertDialogTrigger>
@@ -248,17 +253,13 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
             >
               {isCommenting ? (
                 <div className="flex items-center gap-2">
-                  <TbMessageCircle2Filled className="h-7 w-7 text-myblue" />
-                  <span className="text-base font-light text-myblue">
-                    Commenter
-                  </span>
+                  <TbMessageCircle2Filled className="text-color1 h-7 w-7" />
+                  <span className="text-base font-light">Commenter</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <TbMessageCircle2 className="h-7 w-7 text-myblue" />
-                  <span className="text-base font-light text-myblue">
-                    Commenter
-                  </span>
+                  <TbMessageCircle2 className="text-color1 h-7 w-7" />
+                  <span className="text-base font-light">Commenter</span>
                 </div>
               )}
             </Button>
@@ -274,22 +275,22 @@ const CardRecipe = ({ recipe, currentUser, isFavorite, authorRecipe }) => {
               {!isFavorite ? (
                 <div className="flex items-center gap-2">
                   {isPending ? (
-                    <Loader className="h-7 w-7 text-myblue" />
+                    <Loader className="text-color1 h-7 w-7" />
                   ) : (
-                    <TbHeart className="h-7 w-7 text-myblue" />
+                    <TbHeart className="text-color1 h-7 w-7" />
                   )}
-                  <span className="text-base font-light text-myblue">
+                  <span className="text-base font-light">
                     Ajouter aux favoris
                   </span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   {isPending ? (
-                    <Loader className="h-7 w-7 text-myblue" />
+                    <Loader className="text-color1 h-7 w-7" />
                   ) : (
-                    <TbHeartFilled className="h-7 w-7 text-myblue" />
+                    <TbHeartFilled className="text-color1 h-7 w-7" />
                   )}
-                  <span className="text-base font-light text-myblue">
+                  <span className="text-base font-light">
                     Retirer des favoris
                   </span>
                 </div>

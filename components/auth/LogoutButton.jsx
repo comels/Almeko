@@ -17,9 +17,9 @@ export const LogoutButton = () => {
       }}
     >
       {isPending ? (
-        <Loader className="mx-2 w-5 text-myblue marker:h-5" />
+        <Loader className="text-color1 mx-2 w-5 marker:h-5" />
       ) : (
-        <LogOut className="mx-2 w-5 text-myblue marker:h-5" />
+        <LogOut className="text-color1 mx-2 w-5 marker:h-5" />
       )}
       Déconnexion
     </DropdownMenuItem>

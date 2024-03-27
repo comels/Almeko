@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Hogfish";
+  src: url("/fonts/Hogfish.otf");
+}
+
+html,
+body {
+  min-height: 100vh;
+  margin: 0; /* Enlève la marge par défaut */
+}
+
 /* Shadcn/ui Neutral */
 
 @layer base {

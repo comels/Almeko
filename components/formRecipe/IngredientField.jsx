@@ -32,7 +32,7 @@ const IngredientField = ({ register, errors, index, removeIngredient }) => {
           type="button"
           onClick={() => removeIngredient(index)}
         >
-          <XCircle className="h-4 w-4 text-myblue" />
+          <XCircle className="text-color1 h-4 w-4" />
         </Button>
       </div>
       {errors.ingredients && errors.ingredients[index]?.name && (

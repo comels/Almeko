@@ -19,7 +19,7 @@ const InstructionField = ({ register, errors, index, removeInstruction }) => (
         type="button"
         onClick={() => removeInstruction(index)}
       >
-        <XCircle className="h-4 w-4 text-myblue" />
+        <XCircle className="text-color1 h-4 w-4" />
       </Button>
     </div>
     {errors.instructions && errors.instructions[index]?.content && (

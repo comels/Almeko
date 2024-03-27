@@ -1,7 +1,8 @@
 import Footer from "@/components/Footer";
 import { Header } from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
-import { getCurrentUser } from "./actions/userActions";
+import { getAllRecipes } from "./actions/recipeActions";
+import { getAllUsers, getCurrentUser } from "./actions/userActions";
 import "./globals.css";
 
 export const metadata = {
@@ -11,15 +12,23 @@ export const metadata = {
 
 const RootLayout = async ({ children }) => {
   const currentUser = await getCurrentUser();
+  const allUsers = await getAllUsers();
+  const allRecipes = await getAllRecipes();
   return (
     <html lang="fr" className="h-full">
       <body className="h-full bg-background">
-        <div className="flex flex-col">
-          <Header currentUser={currentUser} />
-          <div className="m-auto w-full flex-1 py-14">{children}</div>
+        <div className="flex min-h-screen flex-col">
+          <Header
+            currentUser={currentUser}
+            allUsers={allUsers}
+            allRecipes={allRecipes}
+          />
+          <div className="m-auto w-full flex-1 bg-stone-100 py-14 pb-36">
+            {children}
+          </div>
           <Toaster />
         </div>
-        <div className="pt-14">
+        <div className="">
           <Footer currentUser={currentUser} />
         </div>
       </body>

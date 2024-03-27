@@ -17,11 +17,11 @@ export const LoginButton = ({ text }) => {
       }}
     >
       {isPending ? (
-        <Loader className="h-5 w-5 text-myblue" />
+        <Loader className="text-color1 h-5 w-5" />
       ) : (
-        <LogIn className="h-5 w-5 text-myblue" />
+        <LogIn className="text-color1 h-5 w-5" />
       )}
-      <span className="ml-2 text-myblue">{text}</span>
+      <span className="text-color1 ml-2">{text}</span>
     </Button>
   );
 };

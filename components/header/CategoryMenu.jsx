@@ -18,7 +18,7 @@ const CategoryMenu = () => {
 
   return (
     <ScrollArea>
-      <div className="mx-5 mb-1 mt-5 py-4 md:mx-0">
+      <div className="mx-5 mb-1 mt-10 py-4 md:mx-0">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-5">
           {categories.map((category) => (
             <CategoryItem

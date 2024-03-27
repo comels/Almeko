@@ -9,7 +9,7 @@ export default function Error() {
         <Alert variant="destructive">
           <AlertTitle>Erreur</AlertTitle>
           <AlertDescription>
-            Connectez vous pour voir vos recettes.
+            Connectez vous pour voir vos favoris.
           </AlertDescription>
         </Alert>
       </div>
